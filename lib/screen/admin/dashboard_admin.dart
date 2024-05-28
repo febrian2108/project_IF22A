@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project/config/asset.dart';
+import 'package:project/navbar_1.dart';
 import 'package:project/screen/admin/home_screen.dart';
 
 class DashboardAdmin extends StatefulWidget {
@@ -15,6 +16,7 @@ class _DashboardAdminState extends State<DashboardAdmin> {
 
   List<Widget> _widgetOption = <Widget>[
     HomeScreen(),
+    Navbar1(),
   ];
 
   @override

@@ -2,8 +2,10 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:project/config/asset.dart';
+import 'package:project/event/event_pref.dart';
 import 'package:project/screen/admin/list_dosen.dart';
 import 'package:project/screen/admin/list_mahasiswa.dart';
+import 'package:project/screen/login.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -53,7 +55,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   IconButton('Menu 5', Icons.account_balance_wallet, 0),
                   IconButton('Menu 6', Icons.edit_road_outlined, 0),
                   IconButton('Menu 7', Icons.people, 0),
-                  IconButton('Menu 8', Icons.people, 0),
+                  IconButton('Logout', Icons.login_outlined, 99),
                 ],
               )
             ],
@@ -131,12 +133,16 @@ class IconButton extends StatelessWidget {
                   Radius.circular(40),
                 ),
                 onTap: () {
-                  Navigator.push(
-                    context, 
-                    MaterialPageRoute(
-                      builder: (context) => _fragment[index]['view'],
-                      ),
-                    ); 
+                  if (index == 99) {
+                    EventPref.clear();
+                    Get.off(Login());
+                  } else {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => _fragment[index]['view']),
+                    );
+                  }
                 },
                 child: Container(
                   // margin: EdgeInsets.all(5),

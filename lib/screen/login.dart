@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:project/config/asset.dart';
+import 'package:project/event/event_db.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -9,6 +10,12 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  var _controllerUsername = TextEditingController();
+  var _controllerPass = TextEditingController();
+  var _formKey = GlobalKey<FormState>();
+
+  bool _isHidden = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -40,6 +47,7 @@ class _LoginState extends State<Login> {
               ),
             ),
             Form(
+              key: _formKey,
               child: Padding(
               padding: EdgeInsets.all(20),
               child: Column(
@@ -47,6 +55,7 @@ class _LoginState extends State<Login> {
                   TextFormField(
                       validator: (value) =>
                           value == '' ? 'Jangan Kosong' : null,
+                          controller: _controllerUsername,
                       style: TextStyle(
                         color: Asset.colorPrimaryDark,
                       ),
@@ -88,6 +97,7 @@ class _LoginState extends State<Login> {
                     TextFormField(
                       validator: (value) =>
                           value == '' ? 'Jangan Kosong' : null,
+                          controller: _controllerPass,
                       style: TextStyle(
                         color: Asset.colorPrimaryDark,
                       ),
@@ -134,7 +144,12 @@ class _LoginState extends State<Login> {
                       ),
                       width: double.infinity,
                       child: InkWell(
-                        onTap: () {},
+                        onTap: () {if (_formKey.currentState!.validate()) {
+                          EventDb.login(
+                              _controllerUsername.text, _controllerPass.text);
+                          _controllerUsername.clear();
+                          _controllerPass.clear();
+                        }},
                         borderRadius: BorderRadius.circular(10),
                         child: Padding(
                           padding: EdgeInsets.symmetric(

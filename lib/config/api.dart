@@ -3,6 +3,8 @@ class Api{
 
   static String _mahasiswa = "$_host/mahasiswa";
   static String _dosen = "$_host/dosen";
+  static String login = "$_host/login.php";
+
 
   //mahasiswa
   static String getMahasiswa = "$_mahasiswa/view.php";

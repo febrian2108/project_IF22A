@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:project/config/asset.dart';
+import 'package:project/event/event_pref.dart';
+import 'package:project/model/user.dart';
 import 'package:project/screen/admin/dashboard_admin.dart';
 import 'package:project/screen/login.dart';
 
@@ -19,7 +21,16 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: Colors.white,
       ),
       debugShowCheckedModeBanner: false,
-      home: DashboardAdmin(),
+      home: FutureBuilder(
+        future: EventPref.getUser(),
+        builder: (context, AsyncSnapshot<User?> snapshot) {
+          return snapshot.data == null
+              ? Login()
+              : snapshot.data!.role == 'Admin'
+                  ? DashboardAdmin()
+                  : DashboardAdmin();
+        },
+      ),
     );
   }
 }

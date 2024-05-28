@@ -2,8 +2,11 @@ import 'dart:convert';
 
 import 'package:get/get.dart';
 import 'package:project/config/api.dart';
+import 'package:project/event/event_pref.dart';
 import 'package:project/model/dosen.dart';
 import 'package:project/model/mahasiswa.dart';
+import 'package:project/model/user.dart';
+import 'package:project/screen/admin/dashboard_admin.dart';
 import 'package:project/widget/info.dart';
 import 'package:http/http.dart' as http;
 
@@ -187,4 +190,36 @@ class EventDb {
     }
   }
 
+  static Future<User?> login(String username, String pass) async {
+    User? user;
+
+    try {
+      var response = await http.post(Uri.parse(Api.login), body: {
+        'text_username': username,
+        'text_pass': pass,
+      });
+
+      if (response.statusCode == 200) {
+        var responBody = jsonDecode(response.body);
+
+        if (responBody['success']) {
+          user = User.fromJson(responBody['user']);
+          EventPref.saveUser(user);
+          Info.snackbar('Login Berhasil');
+          Future.delayed(Duration(milliseconds: 1700), () {
+            Get.off(
+              DashboardAdmin(),
+            );
+          });
+        } else {
+          Info.snackbar('Login Gagal');
+        }
+      } else {
+        Info.snackbar('Request Login Gagal');
+      }
+    } catch (e) {
+      print(e);
+    }
+    return user;
+  }
 }
